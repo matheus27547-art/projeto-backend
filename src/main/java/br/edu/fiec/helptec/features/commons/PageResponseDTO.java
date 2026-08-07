@@ -1,4 +1,4 @@
-package br.edu.fiec.helptec.features.equipamento.model.dto;
+package br.edu.fiec.helptec.features.commons;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
