@@ -1,10 +1,11 @@
+# Maven & Build Output
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-### STS ###
+# STS / Eclipse
 .apt_generated
 .classpath
 .factorypath
@@ -13,13 +14,13 @@ target/
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
-.idea
+# IntelliJ IDEA
+.idea/
 *.iws
 *.iml
 *.ipr
 
-### NetBeans ###
+# NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
@@ -29,24 +30,24 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
+# VS Code
 .vscode/
 
-### OS ###
+# Arquivos do Sistema Operacional
 .DS_Store
 Thumbs.db
 
-### Logs ###
+# Logs
 *.log
 logs/
 
-### Credenciais e configs sensíveis ###
-# Chave de conta de serviço do Firebase (NUNCA versionar)
+# Credenciais e Arquivos Sensíveis / Configurações Locais
 *firebase*.json
 serviceAccountKey.json
-
-# Arquivos de configuração locais com senha de banco/segredos
 application-local.properties
 application-local.yml
 application-secrets.properties
 .env
+
+.mvn
+.mvn/**
