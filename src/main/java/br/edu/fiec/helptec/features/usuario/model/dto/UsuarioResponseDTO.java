@@ -1,42 +1,24 @@
-package br.edu.fiec.helptec.features.usuario.model.entity;
+package br.edu.fiec.helptec.features.usuario.model.dto;
 
-import jakarta.persistence.*;
+public class UsuarioResponseDTO {
 
-
-import java.util.UUID;
-
-@Entity
-@Table(name = "usuario")
-public class UsuarioEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario")
     private Integer idUsuario;
-
-    @Column(name = "uuid_usuario", length = 36, nullable = false, unique = true)
     private String uuidUsuario;
-
-    @Column(name = "nome", nullable = false)
     private String nome;
-
-    @Column(name = "email", nullable = false, unique = true)
     private String email;
-
-    @Column(name = "senha", nullable = false)
-    private String senha;
-
-    @Column(name = "tipo_permissao", nullable = false)
     private Integer tipoPermissao;
 
-    @PrePersist
-    public void prePersist() {
-        if (this.uuidUsuario == null) {
-            this.uuidUsuario = UUID.randomUUID().toString();
-        }
+    public UsuarioResponseDTO() {
     }
 
-    // Getters e Setters
+    public UsuarioResponseDTO(Integer idUsuario, String uuidUsuario, String nome, String email, Integer tipoPermissao) {
+        this.idUsuario = idUsuario;
+        this.uuidUsuario = uuidUsuario;
+        this.nome = nome;
+        this.email = email;
+        this.tipoPermissao = tipoPermissao;
+    }
+
     public Integer getIdUsuario() {
         return idUsuario;
     }
@@ -67,14 +49,6 @@ public class UsuarioEntity {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
     }
 
     public Integer getTipoPermissao() {

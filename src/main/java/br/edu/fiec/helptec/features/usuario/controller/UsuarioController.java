@@ -1,28 +1,58 @@
 package br.edu.fiec.helptec.features.usuario.controller;
 
+import br.edu.fiec.helptec.features.commons.PageRequestDTO;
+import br.edu.fiec.helptec.features.commons.PageResponseDTO;
 import br.edu.fiec.helptec.features.usuario.model.dto.CreateUsuarioRequestDTO;
-import br.edu.fiec.helptec.features.usuario.model.dto.TokenRequestDTO;
+import br.edu.fiec.helptec.features.usuario.model.dto.UsuarioResponseDTO;
 import br.edu.fiec.helptec.features.usuario.service.UsuarioService;
-import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/usuarios")
-@AllArgsConstructor
 public class UsuarioController {
-    private UsuarioService usuarioService;
+
+    private final UsuarioService usuarioService;
+
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
 
     @PostMapping
-    ResponseEntity<Void> createUsuario (@RequestBody CreateUsuarioRequestDTO createUsuarioRequestDTO){
-        usuarioService.createUsuario(createUsuarioRequestDTO);
-        return ResponseEntity.status(201).build();
+    public ResponseEntity<UsuarioResponseDTO> criar(@RequestBody CreateUsuarioRequestDTO request) {
+        UsuarioResponseDTO novoUsuario = usuarioService.criar(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
     }
 
-    @PutMapping
-    ResponseEntity<Void> setToken (@RequestBody TokenRequestDTO tokenRequestDTO){
-        usuarioService.setToken(tokenRequestDTO);
-        return ResponseEntity.status(200).build();
+    @GetMapping
+    public ResponseEntity<List<UsuarioResponseDTO>> listarTodos() {
+        return ResponseEntity.ok(usuarioService.listarTodos());
     }
 
+    @GetMapping("/paginado")
+    public ResponseEntity<PageResponseDTO<UsuarioResponseDTO>> listarPaginado(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        PageRequestDTO pageRequest = new PageRequestDTO(page, size);
+        return ResponseEntity.ok(usuarioService.listarPaginado(pageRequest));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioResponseDTO> buscarPorId(@PathVariable Integer id) {
+        return ResponseEntity.ok(usuarioService.buscarPorId(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioResponseDTO> atualizar(@PathVariable Integer id, @RequestBody CreateUsuarioRequestDTO request) {
+        return ResponseEntity.ok(usuarioService.atualizar(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Integer id) {
+        usuarioService.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
 }
