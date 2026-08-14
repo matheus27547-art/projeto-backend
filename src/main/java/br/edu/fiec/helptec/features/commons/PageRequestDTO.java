@@ -16,11 +16,11 @@ public class PageRequestDTO {
     }
 
     public int getPageNum() {
-        return 0;
+        return page;
     }
 
     public int getPageSize() {
-        return 0;
+        return size;
     }
 
     public String getSortOrder() {

@@ -1,87 +1,102 @@
 package br.edu.fiec.helptec.features.usuario.model.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
-@Table(name = "usuario")
-public class UsuarioEntity {
+@Table(name = "tb_usuario")
+public class UsuarioEntity implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario")
-    private Integer idUsuario;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
-    @Column(name = "uuid_usuario", length = 36, nullable = false, unique = true)
-    private String uuidUsuario;
-
-    @Column(name = "nome", nullable = false)
     private String nome;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(name = "senha", nullable = false)
-    private String senha;
+    @Column(nullable = false)
+    private String password;
 
-    @Column(name = "tipo_permissao", nullable = false)
-    private Integer tipoPermissao;
+    private String fcmToken;
 
-    @PrePersist
-    public void prePersist() {
-        if (this.uuidUsuario == null) {
-            this.uuidUsuario = UUID.randomUUID().toString();
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole role;
+
+
+
+    public UsuarioEntity( String nome, String email, String password, String fcmToken, UserRole role) {
+        this.nome = nome;
+        this.email = email;
+        this.password = password;
+        this.fcmToken = fcmToken;
+        this.role = role;
+    }
+
+    // =======================================================
+    // Conversão de Roles para Authorization no Spring Security
+    // =======================================================
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Se o usuário for ADMIN, ele também terá as permissões do role USER
+        if (this.role == UserRole.ADMIN) {
+            return List.of(
+                    new SimpleGrantedAuthority("ROLE_ADMIN"),
+                    new SimpleGrantedAuthority("ROLE_USER")
+            );
+        } else {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
         }
     }
 
-    // Getters e Setters
-    public Integer getIdUsuario() {
-        return idUsuario;
+    // =======================================================
+    // Demais métodos da interface UserDetails
+    // =======================================================
+
+    @Override
+    public String getPassword() {
+        return this.password;
     }
 
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
+    @Override
+    public String getUsername() {
+        return this.email;
     }
 
-    public String getUuidUsuario() {
-        return uuidUsuario;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public void setUuidUsuario(String uuidUsuario) {
-        this.uuidUsuario = uuidUsuario;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
     }
 
-    public String getNome() {
-        return nome;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public Integer getTipoPermissao() {
-        return tipoPermissao;
-    }
-
-    public void setTipoPermissao(Integer tipoPermissao) {
-        this.tipoPermissao = tipoPermissao;
-    }
 }

@@ -4,14 +4,16 @@ import br.edu.fiec.helptec.features.commons.PageRequestDTO;
 import br.edu.fiec.helptec.features.commons.PageResponseDTO;
 import br.edu.fiec.helptec.features.usuario.model.dto.CreateUsuarioRequestDTO;
 import br.edu.fiec.helptec.features.usuario.model.dto.UsuarioResponseDTO;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface UsuarioService {
+public interface UsuarioService extends UserDetailsService {
     UsuarioResponseDTO criar(CreateUsuarioRequestDTO request);
     List<UsuarioResponseDTO> listarTodos();
     PageResponseDTO<UsuarioResponseDTO> listarPaginado(PageRequestDTO pageRequest);
-    UsuarioResponseDTO buscarPorId(Integer id);
-    UsuarioResponseDTO atualizar(Integer id, CreateUsuarioRequestDTO request);
-    void deletar(Integer id);
+    UsuarioResponseDTO buscarPorId(UUID id);
+    UsuarioResponseDTO atualizar(UUID id, CreateUsuarioRequestDTO request);
+    void deletar(UUID id);
 }
