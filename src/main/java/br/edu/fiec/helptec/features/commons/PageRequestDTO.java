@@ -1,17 +1,29 @@
 package br.edu.fiec.helptec.features.commons;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class PageRequestDTO {
 
-    private int pageNum = 0;
-    private int pageSize = 10;
-    private String sortBy = "id";
-    private String sortOrder = "asc";
+    private int page;
+    private int size;
+
+    public String getSortBy() {
+        return "";
+    }
+
+    public int getPageNum() {
+        return page;
+    }
+
+    public int getPageSize() {
+        return size;
+    }
+
+    public String getSortOrder() {
+        return "";
+    }
 }
