@@ -6,22 +6,28 @@ import com.google.firebase.FirebaseOptions;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 
-import java.io.FileInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 @Configuration
 public class FirebaseConfig {
 
-    @Value("${app.firebase.config-file:serviceAccountKey.json}")
-    private String configFile;
+    // Conteúdo COMPLETO do JSON da service account, vindo de variável de ambiente
+    @Value("${app.firebase.credentials-json}")
+    private String credentialsJson;
 
     @PostConstruct
     public void initialize() {
-        try {
-            InputStream serviceAccount = new ClassPathResource(configFile).getInputStream();
+        if (credentialsJson == null || credentialsJson.isBlank()) {
+            throw new IllegalStateException(
+                    "Variável de ambiente FIREBASE_CREDENTIALS_JSON não definida ou vazia");
+        }
+
+        try (InputStream serviceAccount =
+                     new ByteArrayInputStream(credentialsJson.getBytes(StandardCharsets.UTF_8))) {
 
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
@@ -35,4 +41,3 @@ public class FirebaseConfig {
         }
     }
 }
-
