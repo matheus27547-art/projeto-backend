@@ -1,0 +1,33 @@
+From 1ef79f83d28492be5d665afb9fcd3807e4c5f185 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Thu, 12 Nov 2026 22:03:51 -0300
+Subject: [PATCH 3/4] =?UTF-8?q?CI=20passa=20a=20rodar=20os=20testes=20unit?=
+ =?UTF-8?q?=C3=A1rios?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_012xpyFRPS2vqxyuCv6P8vvC
+---
+ .github/workflows/ci.yml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 905b572..7a45fe2 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -24,8 +24,8 @@ jobs:
+       - name: Dar permissão de execução ao Maven Wrapper
+         run: chmod +x mvnw
+ 
+-      - name: Compilar e empacotar projeto
+-        run: ./mvnw clean package -DskipTests
++      - name: Compilar e rodar os testes unitários
++        run: ./mvnw clean verify
+ 
+   docker-build:
+     runs-on: ubuntu-latest
+-- 
+2.43.0
+

@@ -1,0 +1,56 @@
+From e844972b9c08511c9329f8cbb2c3db9e65a9ee5f Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Thu, 12 Nov 2026 22:04:04 -0300
+Subject: [PATCH 4/4] =?UTF-8?q?Teste=20da=20chave=20aleat=C3=B3ria=20do=20?=
+ =?UTF-8?q?JWT=20quando=20JWT=5FSECRET=20n=C3=A3o=20est=C3=A1=20definido?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_012xpyFRPS2vqxyuCv6P8vvC
+---
+ .../helptec/config/JwtServiceChaveTest.java   | 31 +++++++++++++++++++
+ 1 file changed, 31 insertions(+)
+ create mode 100644 src/test/java/br/edu/fiec/helptec/config/JwtServiceChaveTest.java
+
+diff --git a/src/test/java/br/edu/fiec/helptec/config/JwtServiceChaveTest.java b/src/test/java/br/edu/fiec/helptec/config/JwtServiceChaveTest.java
+new file mode 100644
+index 0000000..2ed3a7e
+--- /dev/null
++++ b/src/test/java/br/edu/fiec/helptec/config/JwtServiceChaveTest.java
+@@ -0,0 +1,31 @@
++package br.edu.fiec.helptec.config;
++
++import br.edu.fiec.helptec.features.usuario.model.entity.UserRole;
++import br.edu.fiec.helptec.features.usuario.model.entity.UsuarioEntity;
++import br.edu.fiec.helptec.support.Fabrica;
++import org.junit.jupiter.api.DisplayName;
++import org.junit.jupiter.api.Test;
++import org.springframework.test.util.ReflectionTestUtils;
++
++import static org.junit.jupiter.api.Assertions.assertEquals;
++
++@DisplayName("JwtService sem JWT_SECRET")
++class JwtServiceChaveTest {
++
++    @Test
++    @DisplayName("sem JWT_SECRET gera uma chave aleatória e continua funcionando")
++    void deveGerarChaveAleatoriaQuandoNaoConfigurada() {
++        //mocks
++        JwtService jwtService = new JwtService();
++        ReflectionTestUtils.setField(jwtService, "secretKey", "");
++        ReflectionTestUtils.setField(jwtService, "jwtExpirationMs", 60_000L);
++        UsuarioEntity usuario = Fabrica.usuario(UserRole.USER);
++
++        //impl
++        jwtService.validarChave();
++        String token = jwtService.generateTokenWithClaims(usuario);
++
++        //asserts
++        assertEquals(usuario.getEmail(), jwtService.extractUsername(token));
++    }
++}
+-- 
+2.43.0
+
