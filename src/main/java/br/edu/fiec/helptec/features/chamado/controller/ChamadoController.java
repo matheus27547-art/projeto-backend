@@ -29,7 +29,7 @@ import java.util.List;
  * do usuário dono do token JWT enviado pelo agente.
  */
 @RestController
-@RequestMapping("/api/chamados")
+@RequestMapping("/api/v1/chamados")
 @RequiredArgsConstructor
 public class ChamadoController {
 

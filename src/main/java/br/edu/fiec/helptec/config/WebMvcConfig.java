@@ -16,6 +16,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         // Register the interceptor
         registry.addInterceptor(myRequestInterceptor)
                 .addPathPatterns("/api/**")         // Intercepts all paths starting with /api/
-                .excludePathPatterns("/api/auth/**"); // Excludes authentication paths from interception
+                .excludePathPatterns("/api/v1/auth/**"); // Excludes authentication paths from interception
     }
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 /** Salas (também expostas como ferramentas MCP para agentes de IA). */
 @RestController
-@RequestMapping("/api/salas")
+@RequestMapping("/api/v1/salas")
 @RequiredArgsConstructor
 public class SalasController {
 

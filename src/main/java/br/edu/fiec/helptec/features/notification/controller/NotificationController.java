@@ -12,7 +12,7 @@ import java.util.Map;
 
 // Controller APENAS para testes manuais do envio de push.
 @RestController
-@RequestMapping("/notifications")
+@RequestMapping("/api/v1/notifications")
 public class NotificationController {
 
     private final NotificationService notificationService;

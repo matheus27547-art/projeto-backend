@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 /** Equipamentos/patrimônios (também expostos como ferramentas MCP para agentes de IA). */
 @RestController
-@RequestMapping("/api/equipamentos")
+@RequestMapping("/api/v1/equipamentos")
 @RequiredArgsConstructor
 public class EquipamentoController {
 

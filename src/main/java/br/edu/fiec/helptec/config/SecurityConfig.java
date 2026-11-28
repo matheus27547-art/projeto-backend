@@ -61,7 +61,7 @@ public class SecurityConfig {
             "/oauth2/**",
             "/login/oauth2/**",
 
-            "/images/**",
+            "/api/v1/images/**",
 
             "/v3/api-docs/**",
             "/v3/api-docs.yaml",
@@ -146,9 +146,8 @@ public class SecurityConfig {
     }
 
     /**
-     * Chamadas de API: rotas da API (inclusive /usuarios, /notifications e /mcp, que não ficam
-     * em /api), qualquer requisição com cabeçalho Authorization (mobile e front com token)
-     * ou que peça JSON.
+     * Chamadas de API: rotas da API (todas em /api/v1, mais o /mcp), qualquer requisição com
+     * cabeçalho Authorization (mobile e front com token) ou que peça JSON.
      */
     private static RequestMatcher requisicaoDeApi() {
         var path = PathPatternRequestMatcher.withDefaults();
@@ -156,8 +155,6 @@ public class SecurityConfig {
         pedeJson.setIgnoredMediaTypes(Set.of(MediaType.ALL));
         return new OrRequestMatcher(
                 path.matcher("/api/**"),
-                path.matcher("/usuarios/**"),
-                path.matcher("/notifications/**"),
                 path.matcher("/mcp/**"),
                 new RequestHeaderRequestMatcher(HttpHeaders.AUTHORIZATION),
                 pedeJson

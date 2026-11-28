@@ -50,13 +50,13 @@ class SalasControllerTest {
     }
 
     @Test
-    @DisplayName("GET /api/salas/{id} devolve 200 com a sala")
+    @DisplayName("GET /api/v1/salas/{id} devolve 200 com a sala")
     void deveBuscarSalaPorId() throws Exception {
         //mocks
         when(salasService.buscarPorId(1L)).thenReturn(new SalasDTO(1L, "Sala 101"));
 
         //impl + asserts
-        mockMvc.perform(get("/api/salas/1"))
+        mockMvc.perform(get("/api/v1/salas/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.idSala").value(1))
                 .andExpect(jsonPath("$.nome").value("Sala 101"));
@@ -64,27 +64,27 @@ class SalasControllerTest {
     }
 
     @Test
-    @DisplayName("GET /api/salas devolve a página")
+    @DisplayName("GET /api/v1/salas devolve a página")
     void deveListarSalas() throws Exception {
         //mocks
         when(salasService.buscarComFiltro(any(), any()))
                 .thenReturn(new PageResponseDTO<>(List.of(new SalasDTO(1L, "Biblioteca")), 1, 0, 1));
 
         //impl + asserts
-        mockMvc.perform(get("/api/salas").param("page", "0").param("size", "10"))
+        mockMvc.perform(get("/api/v1/salas").param("page", "0").param("size", "10"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalItens").value(1))
                 .andExpect(jsonPath("$.itens[0].nome").value("Biblioteca"));
     }
 
     @Test
-    @DisplayName("POST /api/salas devolve 201 com a sala criada")
+    @DisplayName("POST /api/v1/salas devolve 201 com a sala criada")
     void deveCriarSala() throws Exception {
         //mocks
         when(salasService.criar(any(SalasDTO.class))).thenReturn(new SalasDTO(10L, "Laboratório 1"));
 
         //impl + asserts
-        mockMvc.perform(post("/api/salas")
+        mockMvc.perform(post("/api/v1/salas")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"nome\":\"Laboratório 1\"}"))
                 .andExpect(status().isCreated())
@@ -92,10 +92,10 @@ class SalasControllerTest {
     }
 
     @Test
-    @DisplayName("DELETE /api/salas/{id} devolve 204")
+    @DisplayName("DELETE /api/v1/salas/{id} devolve 204")
     void deveDeletarSala() throws Exception {
         //impl + asserts
-        mockMvc.perform(delete("/api/salas/1"))
+        mockMvc.perform(delete("/api/v1/salas/1"))
                 .andExpect(status().isNoContent());
         verify(salasService).deletar(1L);
     }
@@ -108,7 +108,7 @@ class SalasControllerTest {
 
         //impl
         ServletException erro = assertThrows(ServletException.class,
-                () -> mockMvc.perform(get("/api/salas/99")));
+                () -> mockMvc.perform(get("/api/v1/salas/99")));
 
         //asserts
         assertEquals("Sala não encontrada", erro.getCause().getMessage());

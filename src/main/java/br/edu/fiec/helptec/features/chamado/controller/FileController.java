@@ -18,7 +18,7 @@ import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("/images")
+@RequestMapping("/api/v1/images")
 @RequiredArgsConstructor
 public class FileController {
 
@@ -26,8 +26,8 @@ public class FileController {
 
     private static final String PASTA_UPLOADS = "uploads";
 
-    // GET /images/{id}            -> imagem principal (600x600)
-    // GET /images/{id}?thumb=true -> miniatura (150x150, prefixo thumb_)
+    // GET /api/v1/images/{id}            -> imagem principal (600x600)
+    // GET /api/v1/images/{id}?thumb=true -> miniatura (150x150, prefixo thumb_)
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> buscarImagem(
             @PathVariable Long id,

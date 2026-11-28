@@ -24,7 +24,7 @@ import java.util.UUID;
 
 /** Usuários (também expostos como ferramentas MCP para agentes de IA). */
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/api/v1/usuarios")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;

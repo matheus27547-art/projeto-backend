@@ -11,7 +11,7 @@ import java.util.Map;
 
 /** Diagnóstico da integração com a AWS (só para ADMIN). */
 @RestController
-@RequestMapping("/api/aws")
+@RequestMapping("/api/v1/aws")
 public class AwsController {
 
     private final S3StorageService s3StorageService;
@@ -20,7 +20,7 @@ public class AwsController {
         this.s3StorageService = s3StorageService;
     }
 
-    // GET /api/aws/status -> { bucket, regiao, conectado, mensagem }
+    // GET /api/v1/aws/status -> { bucket, regiao, conectado, mensagem }
     @McpTool(name = "status_aws",
             description = "Verifica a conexão com o bucket S3 da AWS (bucket, região, conectado, mensagem). Somente ADMIN.",
             annotations = @McpTool.McpAnnotations(title = "Status da AWS", readOnlyHint = true,

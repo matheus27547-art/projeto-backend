@@ -57,7 +57,7 @@ class UsuarioControllerTest {
     }
 
     @Test
-    @DisplayName("POST /usuarios/csv é exclusivo do SUPER_ADMIN")
+    @DisplayName("POST /api/v1/usuarios/csv é exclusivo do SUPER_ADMIN")
     void csvSomenteSuperAdmin() throws Exception {
         //impl
         PreAuthorize regra = UsuarioController.class
@@ -69,7 +69,7 @@ class UsuarioControllerTest {
     }
 
     @Test
-    @DisplayName("POST /usuarios/csv devolve criados e erros")
+    @DisplayName("POST /api/v1/usuarios/csv devolve criados e erros")
     void deveImportarCsv() throws Exception {
         //mocks
         UsuarioResponseDTO criado = new UsuarioResponseDTO(UUID.randomUUID(), "Ana", "ana@fiec.edu.br", UserRole.USER);
@@ -79,7 +79,7 @@ class UsuarioControllerTest {
                 "nome,email\nAna,ana@fiec.edu.br\nX,x\n".getBytes());
 
         //impl + asserts
-        mockMvc.perform(multipart("/usuarios/csv").file(arquivo))
+        mockMvc.perform(multipart("/api/v1/usuarios/csv").file(arquivo))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalLinhas").value(2))
                 .andExpect(jsonPath("$.criados[0].email").value("ana@fiec.edu.br"))
@@ -87,7 +87,7 @@ class UsuarioControllerTest {
     }
 
     @Test
-    @DisplayName("GET /usuarios/me traz o status do usuário logado")
+    @DisplayName("GET /api/v1/usuarios/me traz o status do usuário logado")
     void meTrazStatus() throws Exception {
         //mocks
         UsuarioEntity usuario = Fabrica.usuario(UserRole.USER);
@@ -95,7 +95,7 @@ class UsuarioControllerTest {
         UserContext.setUser(usuario);
 
         //impl + asserts
-        mockMvc.perform(get("/usuarios/me"))
+        mockMvc.perform(get("/api/v1/usuarios/me"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("NOT_CONFIRMED"))
                 .andExpect(jsonPath("$.role").value("USER"));

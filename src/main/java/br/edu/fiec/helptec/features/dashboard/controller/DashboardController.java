@@ -17,7 +17,7 @@ import java.util.List;
 
 /** Indicadores dos painéis (também expostos como ferramentas MCP para agentes de IA). */
 @RestController
-@RequestMapping("/api/dashboard")
+@RequestMapping("/api/v1/dashboard")
 @RequiredArgsConstructor
 public class DashboardController {
 

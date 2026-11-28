@@ -4,7 +4,7 @@ import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
 
 /**
- * Uma linha do CSV de importação de usuários (POST /usuarios/csv).
+ * Uma linha do CSV de importação de usuários (POST /api/v1/usuarios/csv).
  * Cabeçalho: nome,email,senha,perfil,area
  * <ul>
  *   <li>nome e email: obrigatórios</li>

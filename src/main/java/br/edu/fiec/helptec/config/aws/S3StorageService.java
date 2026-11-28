@@ -87,7 +87,7 @@ public class S3StorageService {
         s3Client.deleteObject(DeleteObjectRequest.builder().bucket(partes[0]).key(partes[1]).build());
     }
 
-    /** Confere se as credenciais funcionam e se o bucket existe (rota /api/aws/status). */
+    /** Confere se as credenciais funcionam e se o bucket existe (rota /api/v1/aws/status). */
     public Map<String, Object> status() {
         Map<String, Object> resposta = new LinkedHashMap<>();
         resposta.put("bucket", bucket);
