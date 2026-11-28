@@ -14,7 +14,7 @@ import java.util.UUID;
 
 /** Skills (competências) dos técnicos de suporte, também expostas como ferramentas MCP. */
 @RestController
-@RequestMapping("/api/skills")
+@RequestMapping("/api/v1/skills")
 @RequiredArgsConstructor
 public class SkillController {
 

@@ -73,13 +73,13 @@ class ChamadoControllerTest {
     }
 
     @Test
-    @DisplayName("GET /api/chamados/{id} devolve 200 com o chamado")
+    @DisplayName("GET /api/v1/chamados/{id} devolve 200 com o chamado")
     void deveBuscarChamado() throws Exception {
         //mocks
         when(chamadoService.buscarPorId(1L)).thenReturn(dto(1L, StatusChamado.APROVADO));
 
         //impl + asserts
-        mockMvc.perform(get("/api/chamados/1"))
+        mockMvc.perform(get("/api/v1/chamados/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.idChamado").value(1))
                 .andExpect(jsonPath("$.status").value("APROVADO"));
@@ -89,7 +89,7 @@ class ChamadoControllerTest {
     @DisplayName("POST sem usuário logado devolve 401 e não cria nada")
     void naoDeveCriarSemUsuarioLogado() throws Exception {
         //impl + asserts
-        mockMvc.perform(post("/api/chamados")
+        mockMvc.perform(post("/api/v1/chamados")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"descricao\":\"PC não liga\"}"))
                 .andExpect(status().isUnauthorized());
@@ -106,7 +106,7 @@ class ChamadoControllerTest {
         String corpo = "{\"descricao\":\"PC não liga\",\"idUsuario\":\"" + UUID.randomUUID() + "\"}";
 
         //impl
-        mockMvc.perform(post("/api/chamados").contentType(MediaType.APPLICATION_JSON).content(corpo))
+        mockMvc.perform(post("/api/v1/chamados").contentType(MediaType.APPLICATION_JSON).content(corpo))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.idChamado").value(5));
 
@@ -125,7 +125,7 @@ class ChamadoControllerTest {
         when(chamadoService.aprovar(1L, aprovador.getId())).thenReturn(dto(1L, StatusChamado.APROVADO));
 
         //impl + asserts
-        mockMvc.perform(patch("/api/chamados/1/aprovar"))
+        mockMvc.perform(patch("/api/v1/chamados/1/aprovar"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("APROVADO"));
     }
@@ -139,7 +139,7 @@ class ChamadoControllerTest {
         when(chamadoService.iniciarAtendimento(1L, suporte)).thenReturn(dto(1L, StatusChamado.EM_ATENDIMENTO));
 
         //impl + asserts
-        mockMvc.perform(patch("/api/chamados/1/iniciar"))
+        mockMvc.perform(patch("/api/v1/chamados/1/iniciar"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("EM_ATENDIMENTO"));
     }
@@ -148,7 +148,7 @@ class ChamadoControllerTest {
     @DisplayName("PATCH /iniciar sem usuário logado devolve 401")
     void naoDeveIniciarSemUsuarioLogado() throws Exception {
         //impl + asserts
-        mockMvc.perform(patch("/api/chamados/1/iniciar"))
+        mockMvc.perform(patch("/api/v1/chamados/1/iniciar"))
                 .andExpect(status().isUnauthorized());
         verify(chamadoService, never()).iniciarAtendimento(any(), any());
     }
@@ -161,7 +161,7 @@ class ChamadoControllerTest {
         when(chamadoService.triar(1L, idSuporte)).thenReturn(dto(1L, StatusChamado.EM_ATENDIMENTO));
 
         //impl + asserts
-        mockMvc.perform(patch("/api/chamados/1/triagem")
+        mockMvc.perform(patch("/api/v1/chamados/1/triagem")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"idSuporte\":\"" + idSuporte + "\"}"))
                 .andExpect(status().isOk())
@@ -175,7 +175,7 @@ class ChamadoControllerTest {
         when(chamadoService.resolver(1L, "Fonte trocada")).thenReturn(dto(1L, StatusChamado.RESOLVIDO));
 
         //impl + asserts
-        mockMvc.perform(patch("/api/chamados/1/resolver")
+        mockMvc.perform(patch("/api/v1/chamados/1/resolver")
                         .contentType(MediaType.TEXT_PLAIN)
                         .content("Fonte trocada"))
                 .andExpect(status().isOk())
@@ -183,10 +183,10 @@ class ChamadoControllerTest {
     }
 
     @Test
-    @DisplayName("DELETE /api/chamados/{id} devolve 204")
+    @DisplayName("DELETE /api/v1/chamados/{id} devolve 204")
     void deveDeletar() throws Exception {
         //impl + asserts
-        mockMvc.perform(delete("/api/chamados/1"))
+        mockMvc.perform(delete("/api/v1/chamados/1"))
                 .andExpect(status().isNoContent());
         verify(chamadoService).deletar(1L);
     }
@@ -200,7 +200,7 @@ class ChamadoControllerTest {
         when(chamadoService.reprovar(1L, aprovador.getId())).thenReturn(dto(1L, StatusChamado.REPROVADO));
 
         //impl + asserts
-        mockMvc.perform(patch("/api/chamados/1/reprovar"))
+        mockMvc.perform(patch("/api/v1/chamados/1/reprovar"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("REPROVADO"));
     }
@@ -209,7 +209,7 @@ class ChamadoControllerTest {
     @DisplayName("PATCH /reprovar sem usuário logado devolve 401")
     void naoDeveReprovarSemLogin() throws Exception {
         //impl + asserts
-        mockMvc.perform(patch("/api/chamados/1/reprovar"))
+        mockMvc.perform(patch("/api/v1/chamados/1/reprovar"))
                 .andExpect(status().isUnauthorized());
         verify(chamadoService, never()).reprovar(any(), any());
     }
